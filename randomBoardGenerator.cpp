@@ -3,7 +3,7 @@
 #include <cstdlib>
 using namespace std;
 
-void assignLife(bool** world1, bool** world2, int x, int y) {
+void randomBoardGenerator::assignLife(bool** world1, bool** world2, int x, int y) {
     srand((unsigned) time(NULL));
     int randX;
     int randY;
@@ -23,7 +23,7 @@ void assignLife(bool** world1, bool** world2, int x, int y) {
 
 
 
-int createWorld(int xD, int yD, int lS) {
+int randomBoardGenerator::createWorld(int xD, int yD, int lS) {
     bool** world1 = new bool*[xD];
     bool** world2 = new bool*[xD];
     for (int i = 0; i < xD; i++) {
@@ -45,10 +45,8 @@ int createWorld(int xD, int yD, int lS) {
 
 
 
-int inputSeedVariables() {
-    int xDimension;
-    int yDimension;
-    int startLife;
+int randomBoardGenerator::inputSeedVariables() {
+
     cout<< "Input X Dimension size: "<< "\n";
     cin>> xDimension;
     cout<< "Input Y Dimension size: "<< "\n";
