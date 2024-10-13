@@ -37,6 +37,21 @@ bool cellState(bool** current, int x, int y) {
     return false;
 }
 
+void displayBoard(bool** board, int x, int y) {
+    for (int i=0; i< x; i++) {
+        for (int j=0; j< y; j++) {
+            if (board[i][j] == true) {
+                cout << ".0";
+            }
+            else {
+                cout << ". ";
+            }
+        }
+        cout <<"."<< endl;
+    }
+}
+
+
 int calculateNextFrame(bool** current, bool** next) {
     bool nextState;
     int xSize = sizeof(current)/sizeof(current[0]);
@@ -47,7 +62,7 @@ int calculateNextFrame(bool** current, bool** next) {
             next[i][j] = nextState;
         }
     }
-
+    displayBoard(next, xSize, ySize);
     return 0;
 }
 
@@ -55,7 +70,9 @@ int calculateNextFrame(bool** current, bool** next) {
 
 
 int main()
-{
+{   //Where stuff starts breaking, need ask for how fix this shit
+    randomBoardGenerator::inputSeedVariables();
+    calculateNextFrame(randomBoardGenerator::currentWorld, randomBoardGenerator::nextWorld);
 
     return 0;
 }
