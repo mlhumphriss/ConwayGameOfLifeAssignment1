@@ -8,9 +8,10 @@ public:
     int inputSeedVariables();
     bool** currentWorld;
     bool** nextWorld;
+    bool** seed;
 
 private:
-    void assignLife(bool** world1, bool** world2, int x, int y);
+    void assignLife(bool** world1, bool** world2, bool** seedWorld, int x, int y);
 
     int createWorld(int xD, int yD, int lS);
 

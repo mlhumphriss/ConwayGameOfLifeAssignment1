@@ -1,3 +1,3 @@
-C:/Users/c1009080/CLionProjects/ConwayGameOfLifeAssignment/cmake-build-debug/CMakeFiles/ConwayGameOfLifeAssignment.dir
-C:/Users/c1009080/CLionProjects/ConwayGameOfLifeAssignment/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/c1009080/CLionProjects/ConwayGameOfLifeAssignment/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/mlhum/CLionProjects/ConwayGameOfLifeAssignment1/cmake-build-debug/CMakeFiles/ConwayGameOfLifeAssignment.dir
+C:/Users/mlhum/CLionProjects/ConwayGameOfLifeAssignment1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/mlhum/CLionProjects/ConwayGameOfLifeAssignment1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
