@@ -67,7 +67,7 @@ int calculateNextFrame(bool** current, bool** next) {
 }
 
 
-
+//hate my life
 
 int main()
 {   //Where stuff starts breaking, need ask for how fix this shit
