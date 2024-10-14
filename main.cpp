@@ -43,8 +43,6 @@ int inputSeed() {
 
 }
 
-
-
 bool cellState(bool** current, int x, int y, int maxX, int maxY) {
     int neighbourCount = 0;
     if (x>0) {
@@ -119,7 +117,23 @@ int calculateNextFrame(bool** current, bool** next, int xSize, int ySize) {
         }
     }
     displayBoard(current, xSize, ySize);
-    displayBoard(next, xSize, ySize);
+    return 0;
+}
+
+int boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iterations) {
+    bool** current;
+    bool** next;
+    for (int i=0;i<iterations;i++) {
+        if (i%2 == 0) {
+            current = world1;
+            next = world2;
+        }
+        else {
+            current = world2;
+            next = world1;
+        }
+        calculateNextFrame(current, next, xSize, ySize);
+    }
     return 0;
 }
 
@@ -135,19 +149,13 @@ int interface() {
     else if (boardGenType ==2) {
         gen.inputSeed();
     }
-
-
-
+    return 0;
 }
-
-
-//hate my life
 
 int main()
 {   //temp to test other processes
     boardGenerator gen;
     gen.inputSeedVariables();
-    calculateNextFrame(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension);
-
+    boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, 50);
     return 0;
 }
