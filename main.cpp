@@ -15,7 +15,7 @@ int writeFile(bool** seed, int xSize, int ySize) {
     }
     saveFile<< xSize<< " "<< ySize<<" ";
     for (int i =0; i<xSize; i++) {
-        for (int j =0; j<ySize; i++) {
+        for (int j =0; j <ySize; j++) {
             saveFile<< seed[i][j] << " ";
         }
     }
