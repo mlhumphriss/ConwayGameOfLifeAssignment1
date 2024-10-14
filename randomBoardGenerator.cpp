@@ -1,9 +1,10 @@
 #include "randomBoardGenerator.h"
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
 using namespace std;
 
-void randomBoardGenerator::assignLife(bool** world1, bool** world2, bool** seedWorld, int x, int y) {
+void boardGenerator::assignLife(bool** world1, bool** world2, bool** seedWorld, int x, int y) {
     srand((unsigned) time(NULL));
     int randX;
     int randY;
@@ -24,7 +25,7 @@ void randomBoardGenerator::assignLife(bool** world1, bool** world2, bool** seedW
 
 
 
-int randomBoardGenerator::createWorld(int xD, int yD, int lS) {
+int boardGenerator::createWorld(int xD, int yD, int lS) {
     bool** world1 = new bool*[xD];
     bool** world2 = new bool*[xD];
     bool** seedWorld = new bool*[xD];
@@ -48,11 +49,32 @@ int randomBoardGenerator::createWorld(int xD, int yD, int lS) {
     return 0;
 }
 
+int boardGenerator::inputSeed() {
+    string filename;
+    cout << "Input filename in form file.txt: "<<"\n";
+    cin >> filename;
+    ifstream infile(filename);
+    infile>>xDimension;
+    infile>>yDimension;
+    bool** loadedWorld1 = new bool*[xDimension];
+    bool** loadedWorld2 = new bool*[xDimension];
+    for (int i = 0; i < xDimension; i++) {
+        loadedWorld1[i] = new bool[yDimension];
+        loadedWorld2[i] = new bool[yDimension];
+        for (int j = 0; j <yDimension; j++) {
+            infile>>loadedWorld1[i][j];
+        }
+    }
+    world1Pointer = loadedWorld1;
+    world2Pointer = loadedWorld2;
+
+    return 0;
+
+}
 
 
 
-
-int randomBoardGenerator::inputSeedVariables() {
+int boardGenerator::inputSeedVariables() {
 
     cout<< "Input X Dimension size: "<< "\n";
     cin>> xDimension;

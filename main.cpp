@@ -123,12 +123,29 @@ int calculateNextFrame(bool** current, bool** next, int xSize, int ySize) {
     return 0;
 }
 
+int interface() {
+    int boardGenType;
+    cout << "To Generate a new board press 1"<<"\n";
+    cout << "To Load a saved board press 2"<<"\n";
+    cin >> boardGenType;
+    boardGenerator gen;
+    if (boardGenType ==1) {
+        gen.inputSeedVariables();
+    }
+    else if (boardGenType ==2) {
+        gen.inputSeed();
+    }
+
+
+
+}
+
 
 //hate my life
 
 int main()
 {   //temp to test other processes
-    randomBoardGenerator gen;
+    boardGenerator gen;
     gen.inputSeedVariables();
     calculateNextFrame(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension);
 

@@ -3,9 +3,10 @@
 
 
 
-class randomBoardGenerator {
+class boardGenerator {
 public:
     int inputSeedVariables();
+    int inputSeed();
     bool** world1Pointer;
     bool** world2Pointer;
     bool** seed;
