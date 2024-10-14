@@ -9,14 +9,15 @@ public:
     bool** currentWorld;
     bool** nextWorld;
     bool** seed;
+    int xDimension;
+    int yDimension;
 
 private:
     void assignLife(bool** world1, bool** world2, bool** seedWorld, int x, int y);
 
     int createWorld(int xD, int yD, int lS);
 
-    int xDimension;
-    int yDimension;
+
     int startLife;
 };
 

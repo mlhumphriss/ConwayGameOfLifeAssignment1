@@ -2,32 +2,51 @@
 #include "randomBoardGenerator.h"
 using namespace std;
 
-bool cellState(bool** current, int x, int y) {
+bool cellState(bool** current, int x, int y, int maxX, int maxY) {
     int neighbourCount = 0;
-    if (current[x-1][y+1] == true) {
-        neighbourCount++;
+    if (x>0) {
+        if (y>0) {
+            if (current[x-1][y-1] == true) {
+                neighbourCount++;
+            }
+        }
+        if (current[x-1][y] == true) {
+            neighbourCount++;
+        }
+        if (y<maxY-1) {
+            if (current[x-1][y+1] == true) {
+                neighbourCount++;
+            }
+        }
     }
-    if (current[x][y+1] == true) {
-        neighbourCount++;
+    if (x<maxX-1) {
+        if (y>0) {
+            if (current[x+1][y-1] == true) {
+                neighbourCount++;
+            }
+        }
+        if (current[x+1][y] == true) {
+            neighbourCount++;
+        }
+        if (y<maxY-1) {
+            if (current[x+1][y+1] == true) {
+                neighbourCount++;
+            }
+        }
     }
-    if (current[x+1][y+1] == true) {
-        neighbourCount++;
+    if (y>0) {
+        if (current[x][y-1] == true) {
+            neighbourCount++;
+        }
+
     }
-    if (current[x-1][y] == true) {
-        neighbourCount++;
+    if (y<maxY-1) {
+        if (current[x][y+1] == true) {
+            neighbourCount++;
+        }
     }
-    if (current[x+1][y] == true) {
-        neighbourCount++;
-    }
-    if (current[x-1][y-1] == true) {
-        neighbourCount++;
-    }
-    if (current[x][y-1] == true) {
-        neighbourCount++;
-    }
-    if (current[x+1][y-1] == true) {
-        neighbourCount++;
-    }
+
+
     if (neighbourCount == 3) {
         return true;
     }
@@ -47,21 +66,19 @@ void displayBoard(bool** board, int x, int y) {
                 cout << ". ";
             }
         }
-        cout <<"."<< endl;
+        cout <<"."<< "\n";
     }
+    cout<<"\n";
 }
 
 
-int calculateNextFrame(bool** current, bool** next) {
-    bool nextState;
-    int xSize = sizeof(current)/sizeof(current[0]);
-    int ySize = sizeof(current[0])/sizeof(current[0][0]);
+int calculateNextFrame(bool** current, bool** next, int xSize, int ySize) {
     for (int i=0; i< xSize; i++) {
         for (int j=0; j< ySize; j++) {
-            nextState = cellState(current,i, j);
-            next[i][j] = nextState;
+            next[i][j] = cellState(current,i, j, xSize,ySize);
         }
     }
+    displayBoard(current, xSize, ySize);
     displayBoard(next, xSize, ySize);
     return 0;
 }
@@ -70,9 +87,11 @@ int calculateNextFrame(bool** current, bool** next) {
 //hate my life
 
 int main()
-{   //Where stuff starts breaking, need ask for how fix this shit
-    randomBoardGenerator::inputSeedVariables();
-    calculateNextFrame(randomBoardGenerator::currentWorld, randomBoardGenerator::nextWorld);
+{   //temp to test other processes
+    randomBoardGenerator gen;
+    gen.inputSeedVariables();
+    cout<<**(gen.currentWorld)<<"\n";
+    calculateNextFrame(gen.currentWorld, gen.nextWorld, gen.xDimension, gen.yDimension);
 
     return 0;
 }
