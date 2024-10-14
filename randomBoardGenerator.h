@@ -6,8 +6,8 @@
 class randomBoardGenerator {
 public:
     int inputSeedVariables();
-    bool** currentWorld;
-    bool** nextWorld;
+    bool** world1Pointer;
+    bool** world2Pointer;
     bool** seed;
     int xDimension;
     int yDimension;

@@ -42,8 +42,8 @@ int randomBoardGenerator::createWorld(int xD, int yD, int lS) {
     for (int k =0; k< lS; k++) {
         assignLife(world1, world2,seedWorld, xD, yD);
     }
-    currentWorld = world1;
-    nextWorld = world2;
+    world1Pointer = world1;
+    world2Pointer = world2;
     seed = seedWorld;
     return 0;
 }
