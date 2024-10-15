@@ -133,8 +133,6 @@ int postRunInterface(int seed, int x, int y, int startLife) {
             break;
 
     }
-
-
     return 0;
 }
 
@@ -197,7 +195,7 @@ int interface() {
     cin >> boardGenType;
     boardGenerator gen;
     int iterations;
-    bool view;
+    bool view = false;
     int viewCheck;
     switch(boardGenType) {
         case 1:
@@ -208,9 +206,6 @@ int interface() {
             cin>> viewCheck;
             if (viewCheck ==1) {
                 view = true;
-            }
-            else {
-                view = false;
             }
             boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, view);
             postRunInterface(gen.seed,gen.xDimension,gen.yDimension,gen.startLife);
@@ -224,26 +219,16 @@ int interface() {
             if (viewCheck ==1) {
                 view = true;
             }
-            else {
-                view = false;
-            }
             boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, view);
             break;
         case 3:
             searchInterface(gen);
             break;
     }
-
     return 0;
 }
 
-int main()
-{   //temp to test other processes
-    /*
-    boardGenerator gen;
-    gen.inputSeedVariables();
-    boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, 50, 0);
-    */
+int main(){
     interface();
     return 0;
 }
