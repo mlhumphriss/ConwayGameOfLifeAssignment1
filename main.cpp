@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int writeFile(bool** seed, int xSize, int ySize) {
+int writeFile(int seed, int xSize, int ySize, int startLife) {
     cout<< "Name to save file as in format file.txt: "<<"\n";
     string name;
     cin >> name;
@@ -13,32 +13,9 @@ int writeFile(bool** seed, int xSize, int ySize) {
         cerr << "Failed to open file for writing.\n";
         return 1;
     }
-    saveFile<< xSize<< " "<< ySize<<" ";
-    for (int i =0; i<xSize; i++) {
-        for (int j =0; j <ySize; j++) {
-            saveFile<< seed[i][j] << " ";
-        }
-    }
-    saveFile.close();
-    return 0;
+    saveFile<< xSize<< " "<< ySize<<" "<<seed<<" "<<startLife << "\n";
 
-}
-int inputSeed() {
-    string filename;
-    cout << "Input filename in form file.txt: "<<"\n";
-    cin >> filename;
-    ifstream infile(filename);
-    int xSize;
-    int ySize;
-    infile>>xSize;
-    infile>>ySize;
-    bool** loadedWorld = new bool*[xSize];
-    for (int i = 0; i < xSize; i++) {
-        loadedWorld[i] = new bool[ySize];
-        for (int j = 0; j <ySize; j++) {
-            infile>>loadedWorld[i][j];
-        }
-    }
+    saveFile.close();
     return 0;
 
 }
@@ -137,18 +114,48 @@ int boardIteration(bool** world1, bool** world2, int xSize, int ySize, int itera
     return 0;
 }
 
+int searchInterface(boardGenerator gen, int iterations){
+
+    return 0;
+}
+
+
+
 int interface() {
     int boardGenType;
-    cout << "To Generate a new board press 1"<<"\n";
-    cout << "To Load a saved board press 2"<<"\n";
+    cout << "To Run with a random seed press 1"<<"\n";
+    cout << "To Load a saved seed press 2"<<"\n";
+    cout<< "To Run an experiment search press 3"<<"\n";
     cin >> boardGenType;
     boardGenerator gen;
-    if (boardGenType ==1) {
-        gen.inputSeedVariables();
+    int iterations;
+
+    switch(boardGenType) {
+        case 1:
+            gen.inputSeedVariables();
+            cout<< "Number of iterations of game: "<<"\n";
+            cin>> iterations;
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations);
+            break;
+        case 2:
+            gen.inputSeedFile();
+            cout<< "Number of iterations of game: "<<"\n";
+            cin>> iterations;
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations);
+            break;
+        case 3:
+            cout<< "Number of iterations of game: "<<"\n";
+            cin>> iterations;
+            searchInterface(gen, iterations);
+            break;
     }
-    else if (boardGenType ==2) {
-        gen.inputSeed();
-    }
+
+
+
+
+
+
+
     return 0;
 }
 

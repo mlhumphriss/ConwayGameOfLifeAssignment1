@@ -6,20 +6,18 @@
 class boardGenerator {
 public:
     int inputSeedVariables();
-    int inputSeed();
+    int inputSeedFile();
     bool** world1Pointer;
     bool** world2Pointer;
-    bool** seed;
+    int seed;
     int xDimension;
     int yDimension;
+    int startLife;
 
 private:
-    void assignLife(bool** world1, bool** world2, bool** seedWorld, int x, int y);
+    void assignLife(bool** world1, bool** world2, int x, int y, int seed);
 
-    int createWorld(int xD, int yD, int lS);
-
-
-    int startLife;
+    int createWorld(int xD, int yD, int lS, int s);
 };
 
 
