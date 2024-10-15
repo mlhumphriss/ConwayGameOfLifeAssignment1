@@ -14,7 +14,7 @@ public:
     int yDimension;
     int startLife;
     void assignLife(bool** world1, bool** world2, int x, int y, int seed);
-    void resetWorld(bool**world, int x,int y);
+    void resetWorld(bool **world1, int x, int y, bool**world2, int seed, int sLife);
 
 private:
 

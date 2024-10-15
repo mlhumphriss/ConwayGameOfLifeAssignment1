@@ -4,17 +4,14 @@
 
 using namespace std;
 
+//This function wont write to file with name "test.txt"
 int writeFile(int seed, int xSize, int ySize, int startLife) {
     cout<< "Name to save file as in format file.txt: "<<"\n";
     string name;
     cin >> name;
-    ofstream saveFile(name);
-    if (saveFile.is_open()) {
-        cerr << "Failed to open file for writing.\n";
-        return 1;
-    }
+    ofstream saveFile;
+    saveFile.open(name.c_str());
     saveFile<< xSize<< " "<< ySize<<" "<<seed<<" "<<startLife << "\n";
-
     saveFile.close();
     return 0;
 
@@ -87,17 +84,22 @@ void displayBoard(bool** board, int x, int y) {
 }
 
 
-int calculateNextFrame(bool** current, bool** next, int xSize, int ySize) {
+
+
+
+int calculateNextFrame(bool** current, bool** next, int xSize, int ySize, bool view) {
     for (int i=0; i< xSize; i++) {
         for (int j=0; j< ySize; j++) {
             next[i][j] = cellState(current,i, j, xSize,ySize);
         }
     }
-    //displayBoard(current, xSize, ySize);
+    if (view) {
+        displayBoard(current, xSize, ySize);
+    }
     return 0;
 }
 
-bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iterations, int searchVariable) {
+bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iterations, int searchVariable, bool view) {
     bool** current;
     bool** next;
     for (int i=0;i<iterations;i++) {
@@ -109,7 +111,7 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
             current = world2;
             next = world1;
         }
-        calculateNextFrame(current, next, xSize, ySize);
+        calculateNextFrame(current, next, xSize, ySize, view);
         if (searchVariable != 0) {
             //search pattern function call
             bool searchResult;
@@ -119,6 +121,25 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
     return false;
 }
 
+int postRunInterface(int seed, int x, int y, int startLife) {
+    int selection;
+    cout << "Enter 1 to save seed data to file, 2 to skip."<<"\n";
+    cin >> selection;
+    switch(selection) {
+        case 1:
+            writeFile(seed, x, y, startLife);
+            break;
+        case 2:
+            break;
+
+    }
+
+
+    return 0;
+}
+
+
+
 int experimentLooping(boardGenerator gen, int searchType) {
     gen.inputSeedVariables();
     int iterations;
@@ -126,16 +147,30 @@ int experimentLooping(boardGenerator gen, int searchType) {
     cin>> iterations;
     bool patternFound;
     while (patternFound == false) {
-        patternFound = boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, searchType);
+        patternFound = boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, searchType, false);
         displayBoard(gen.world1Pointer, gen.xDimension, gen.yDimension);
         if (patternFound == false) {
             gen.seed++;
-            gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension);
-            for (int k =0; k< gen.startLife; k++) {
-                gen.assignLife(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, gen.seed);
-            }
+            gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension, gen.world2Pointer, gen.seed, gen.startLife);
         }
     }
+    int viewSelect;
+    cout << "Pattern Found in seed: "<< gen.seed<<"\n";
+    cout << "Press 1 to view, 2 to skip viewing: " << "\n";
+    cin >> viewSelect;
+    switch(viewSelect) {
+        case 1:
+            gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension, gen.world2Pointer, gen.seed, gen.startLife);
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, true);
+            postRunInterface(gen.seed, gen.xDimension, gen.yDimension, gen.startLife);
+            break;
+        case 2:
+            postRunInterface(gen.seed, gen.xDimension, gen.yDimension, gen.startLife);
+            break;
+    }
+
+    postRunInterface(gen.seed, gen.xDimension, gen.yDimension, gen.startLife);
+
     return 0;
 }
 
@@ -162,19 +197,37 @@ int interface() {
     cin >> boardGenType;
     boardGenerator gen;
     int iterations;
-
+    bool view;
+    int viewCheck;
     switch(boardGenType) {
         case 1:
             gen.inputSeedVariables();
-            cout<< "Number of iterations of game: "<<"\n";
+            cout<< "Number of iterations of Game: "<<"\n";
             cin>> iterations;
-            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0);
+            cout<< "Would Press 1 to view, 2 to not view: "<<"\n";
+            cin>> viewCheck;
+            if (viewCheck ==1) {
+                view = true;
+            }
+            else {
+                view = false;
+            }
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, view);
+            postRunInterface(gen.seed,gen.xDimension,gen.yDimension,gen.startLife);
             break;
         case 2:
             gen.inputSeedFile();
             cout<< "Number of iterations of game: "<<"\n";
             cin>> iterations;
-            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0);
+            cout<< "Would Press 1 to view, 2 to not view: "<<"\n";
+            cin>> viewCheck;
+            if (viewCheck ==1) {
+                view = true;
+            }
+            else {
+                view = false;
+            }
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, view);
             break;
         case 3:
             searchInterface(gen);
