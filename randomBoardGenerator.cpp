@@ -18,6 +18,14 @@ void boardGenerator::assignLife(bool** world1, bool** world2, int x, int y, int 
     world2[randX][randY] = true;
 }
 
+void boardGenerator::resetWorld(bool **world, int x, int y) {
+    for (int i = 0; i < x; i++) {
+        for (int j = 0; j <y; j++){
+            world[i][j] = false;
+        }
+    }
+}
+
 
 
 int boardGenerator::createWorld(int xD, int yD, int lS, int s) {

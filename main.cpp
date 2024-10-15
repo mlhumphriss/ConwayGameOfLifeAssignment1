@@ -97,7 +97,7 @@ int calculateNextFrame(bool** current, bool** next, int xSize, int ySize) {
     return 0;
 }
 
-int boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iterations) {
+bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iterations, int searchVariable) {
     bool** current;
     bool** next;
     for (int i=0;i<iterations;i++) {
@@ -110,22 +110,59 @@ int boardIteration(bool** world1, bool** world2, int xSize, int ySize, int itera
             next = world1;
         }
         calculateNextFrame(current, next, xSize, ySize);
+        if (searchVariable != 0) {
+            //search pattern function call
+        }
     }
+    return false;
+}
+
+int experimentLooping(boardGenerator gen, int searchType) {
+    int iterations;
+    cout<< "Number of iterations of game: "<<"\n";
+    cin>> iterations;
+    bool patternFound;
+    while (patternFound == false) {
+        patternFound = boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, searchType);
+        if (patternFound == false) {
+            gen.seed++;
+            gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension);
+            for (int k =0; k< gen.startLife; k++) {
+                gen.assignLife(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, gen.seed);
+            }
+        }
+    }
+
+
+
     return 0;
 }
 
-int searchInterface(boardGenerator gen, int iterations){
+
+int searchInterface(boardGenerator gen){
+    int searchType;
+    cout << "To Search for Block enter 1"<<"\n";
+    cout << "To Search for Beehive enter 2"<<"\n";
+    cout << "To Search for Blinker enter 3"<<"\n";
+    cout << "To Search for Toad enter 4"<<"\n";
+    cout << "To Search for Glider enter 5"<<"\n";
+    cout << "To Search for Light Weight SpaceShip enter 6"<<"\n";
+    cin >> searchType;
+
+    switch(searchType) {
+        case 1:
+            experimentLooping(gen, searchType);
+            break;
+    }
 
     return 0;
 }
-
-
 
 int interface() {
     int boardGenType;
-    cout << "To Run with a random seed press 1"<<"\n";
-    cout << "To Load a saved seed press 2"<<"\n";
-    cout<< "To Run an experiment search press 3"<<"\n";
+    cout << "To Run with a random seed enter 1"<<"\n";
+    cout << "To Load a saved seed enter 2"<<"\n";
+    cout << "To Run an experiment search enter 3"<<"\n";
     cin >> boardGenType;
     boardGenerator gen;
     int iterations;
@@ -135,26 +172,18 @@ int interface() {
             gen.inputSeedVariables();
             cout<< "Number of iterations of game: "<<"\n";
             cin>> iterations;
-            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations);
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0);
             break;
         case 2:
             gen.inputSeedFile();
             cout<< "Number of iterations of game: "<<"\n";
             cin>> iterations;
-            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations);
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0);
             break;
         case 3:
-            cout<< "Number of iterations of game: "<<"\n";
-            cin>> iterations;
-            searchInterface(gen, iterations);
+            searchInterface(gen);
             break;
     }
-
-
-
-
-
-
 
     return 0;
 }
@@ -163,6 +192,6 @@ int main()
 {   //temp to test other processes
     boardGenerator gen;
     gen.inputSeedVariables();
-    boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, 50);
+    boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, 50, 0);
     return 0;
 }
