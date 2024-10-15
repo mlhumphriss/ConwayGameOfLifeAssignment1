@@ -93,7 +93,7 @@ int calculateNextFrame(bool** current, bool** next, int xSize, int ySize) {
             next[i][j] = cellState(current,i, j, xSize,ySize);
         }
     }
-    displayBoard(current, xSize, ySize);
+    //displayBoard(current, xSize, ySize);
     return 0;
 }
 
@@ -112,18 +112,22 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
         calculateNextFrame(current, next, xSize, ySize);
         if (searchVariable != 0) {
             //search pattern function call
+            bool searchResult;
+            return searchResult;
         }
     }
     return false;
 }
 
 int experimentLooping(boardGenerator gen, int searchType) {
+    gen.inputSeedVariables();
     int iterations;
     cout<< "Number of iterations of game: "<<"\n";
     cin>> iterations;
     bool patternFound;
     while (patternFound == false) {
         patternFound = boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, searchType);
+        displayBoard(gen.world1Pointer, gen.xDimension, gen.yDimension);
         if (patternFound == false) {
             gen.seed++;
             gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension);
@@ -132,9 +136,6 @@ int experimentLooping(boardGenerator gen, int searchType) {
             }
         }
     }
-
-
-
     return 0;
 }
 
@@ -148,12 +149,7 @@ int searchInterface(boardGenerator gen){
     cout << "To Search for Glider enter 5"<<"\n";
     cout << "To Search for Light Weight SpaceShip enter 6"<<"\n";
     cin >> searchType;
-
-    switch(searchType) {
-        case 1:
-            experimentLooping(gen, searchType);
-            break;
-    }
+    experimentLooping(gen, searchType);
 
     return 0;
 }
@@ -190,8 +186,11 @@ int interface() {
 
 int main()
 {   //temp to test other processes
+    /*
     boardGenerator gen;
     gen.inputSeedVariables();
     boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, 50, 0);
+    */
+    interface();
     return 0;
 }
