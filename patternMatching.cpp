@@ -1,4 +1,5 @@
 #include "patternMatching.h"
+#include "pattern.h"
 using namespace std;
 
 bool patternMatching::inBoundsCheck(int a, int mod, int max) {
