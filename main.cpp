@@ -1,10 +1,11 @@
 #include <iostream>
 #include "randomBoardGenerator.h"
 #include <fstream>
+#include "patternMatching.h"
+
 
 using namespace std;
 
-//This function wont write to file with name "test.txt"
 int writeFile(int seed, int xSize, int ySize, int startLife) {
     cout<< "Name to save file as in format file.txt: "<<"\n";
     string name;
@@ -68,6 +69,17 @@ bool cellState(bool** current, int x, int y, int maxX, int maxY) {
     return false;
 }
 
+//Template used to see if alive cells are greater than max for that world size
+template <typename T>
+class ERNAliveComparison {
+private:
+    T ernMaxAlive;
+public:
+    ERNAliveComparison(T max) {ernMaxAlive = max;}
+    T operator >(T cpr){return (ernMaxAlive > cpr ? true : false);}
+};
+
+
 void displayBoard(bool** board, int x, int y) {
     for (int i=0; i< x; i++) {
         for (int j=0; j< y; j++) {
@@ -84,9 +96,6 @@ void displayBoard(bool** board, int x, int y) {
 }
 
 
-
-
-
 int calculateNextFrame(bool** current, bool** next, int xSize, int ySize, bool view) {
     for (int i=0; i< xSize; i++) {
         for (int j=0; j< ySize; j++) {
@@ -99,9 +108,11 @@ int calculateNextFrame(bool** current, bool** next, int xSize, int ySize, bool v
     return 0;
 }
 
-bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iterations, int searchVariable, bool view) {
+bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iterations, int searchVariable, bool view, int startLife) {
     bool** current;
     bool** next;
+    patternMatching pat;
+
     for (int i=0;i<iterations;i++) {
         if (i%2 == 0) {
             current = world1;
@@ -113,8 +124,9 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
         }
         calculateNextFrame(current, next, xSize, ySize, view);
         if (searchVariable != 0) {
-            //search pattern function call
-            bool searchResult;
+            //Need to build out this in other file
+            bool searchResult = pat.patternSort(current,next,xSize,ySize,startLife,searchVariable);
+
             return searchResult;
         }
     }
@@ -130,45 +142,81 @@ int postRunInterface(int seed, int x, int y, int startLife) {
             writeFile(seed, x, y, startLife);
             break;
         case 2:
+            cout << "Seed not saved."<<"\n";
             break;
-
     }
     return 0;
 }
 
 
 
-int experimentLooping(boardGenerator gen, int searchType) {
+int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
     gen.inputSeedVariables();
+    int initialLife = gen.startLife;
+    int lowestERN[3] = {10000, 0, 0};
+    ERNAliveComparison<int> max((gen.xDimension*gen.yDimension)/2);
+    bool ernTest = false;
+    int minSeedRuns = 300;
+    if (ernVariable == 1) {
+        ernTest =true;
+    }
     int iterations;
     cout<< "Number of iterations of game: "<<"\n";
     cin>> iterations;
     bool patternFound;
     while (patternFound == false) {
-        patternFound = boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, searchType, false);
-        displayBoard(gen.world1Pointer, gen.xDimension, gen.yDimension);
+        patternFound = boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, searchType, false, gen.startLife);
         if (patternFound == false) {
-            gen.seed++;
+            if (ernTest == true and (max > gen.startLife)) {
+                gen.startLife++;
+            }
+            else {
+                gen.startLife = initialLife;
+                gen.seed++;
+            }
             gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension, gen.world2Pointer, gen.seed, gen.startLife);
         }
+        else {
+            if (ernTest == true and lowestERN[0] > (gen.xDimension+gen.yDimension+gen.startLife)) {
+                lowestERN[0]= (gen.xDimension+gen.yDimension+gen.startLife);
+                lowestERN[1]= gen.seed;
+                lowestERN[2] = gen.startLife;
+            }
+            if (gen.seed < minSeedRuns) {
+                patternFound = false;
+            }
+        }
+
     }
     int viewSelect;
-    cout << "Pattern Found in seed: "<< gen.seed<<"\n";
+    if(ernTest == true) {
+        cout <<"Lowest ERN is "<<lowestERN[0]<<" found in seed "<< lowestERN[1]<<"\n";
+    }
+    else {
+        cout << "Pattern Found in seed: "<< gen.seed<<"\n";
+    }
     cout << "Press 1 to view, 2 to skip viewing: " << "\n";
     cin >> viewSelect;
     switch(viewSelect) {
         case 1:
-            gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension, gen.world2Pointer, gen.seed, gen.startLife);
-            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, true);
+            if (ernTest == true) {
+                gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension, gen.world2Pointer, lowestERN[1], lowestERN[2]);
+            }
+            else {
+                gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension, gen.world2Pointer, gen.seed, gen.startLife);
+            }
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, true, gen.startLife);
             postRunInterface(gen.seed, gen.xDimension, gen.yDimension, gen.startLife);
             break;
         case 2:
-            postRunInterface(gen.seed, gen.xDimension, gen.yDimension, gen.startLife);
+            if (ernTest == true) {
+                postRunInterface(lowestERN[1], gen.xDimension, gen.yDimension, lowestERN[2]);
+            }
+            else {
+                postRunInterface(gen.seed, gen.xDimension, gen.yDimension, gen.startLife);
+            }
             break;
     }
-
-    postRunInterface(gen.seed, gen.xDimension, gen.yDimension, gen.startLife);
-
     return 0;
 }
 
@@ -182,7 +230,16 @@ int searchInterface(boardGenerator gen){
     cout << "To Search for Glider enter 5"<<"\n";
     cout << "To Search for Light Weight SpaceShip enter 6"<<"\n";
     cin >> searchType;
-    experimentLooping(gen, searchType);
+    int ernSearch;
+    cout << "Enter 1 for normal search, enter 2 for ERN test"<<"\n";
+    cin >> ernSearch;
+    if (ernSearch == 2) {
+        experimentLooping(gen, searchType, 1);
+    }
+    else {
+        experimentLooping(gen, searchType, 0);
+    }
+
 
     return 0;
 }
@@ -207,7 +264,7 @@ int interface() {
             if (viewCheck ==1) {
                 view = true;
             }
-            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, view);
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, view, gen.startLife);
             postRunInterface(gen.seed,gen.xDimension,gen.yDimension,gen.startLife);
             break;
         case 2:
@@ -219,7 +276,7 @@ int interface() {
             if (viewCheck ==1) {
                 view = true;
             }
-            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, view);
+            boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, 0, view, gen.startLife);
             break;
         case 3:
             searchInterface(gen);
