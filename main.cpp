@@ -125,6 +125,7 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
         calculateNextFrame(current, next, xSize, ySize, view);
         if (searchVariable != 0) {
             //Need to build out this in other file
+            //bool searchResult;
             bool searchResult = pat.patternSort(current,next,xSize,ySize,startLife,searchVariable);
 
             return searchResult;
@@ -182,7 +183,7 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
                 lowestERN[1]= gen.seed;
                 lowestERN[2] = gen.startLife;
             }
-            if (gen.seed < minSeedRuns) {
+            if (ernTest == true and gen.seed < minSeedRuns) {
                 patternFound = false;
             }
         }

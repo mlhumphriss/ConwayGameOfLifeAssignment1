@@ -5,7 +5,7 @@
 
 class Pattern {
 public:
-    int truePattern[][];
+    //int truePattern[][];
 };
 
 class Block : public Pattern {
