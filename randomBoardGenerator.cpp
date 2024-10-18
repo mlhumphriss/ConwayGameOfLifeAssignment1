@@ -30,6 +30,23 @@ void boardGenerator::resetWorld(bool **world1, int x, int y, bool**world2, int s
     }
 }
 
+int createToad(bool** world1, int xD, int yD) {
+    //int truePattern1[5][2] = { {0,1}, {0, 2}, {-1, 1}, {-1, 2}, {-1,3} };
+
+    for (int k = 0; k< 6; k++) {
+        if (xD > 8 and yD >8) {
+            world1[2][2] = true;
+            world1[3][2] = true;
+            world1[4][2] = true;
+            world1[3][3] = true;
+            world1[4][3] = true;
+            world1[5][3] = true;
+        }
+
+    }
+    return 0;
+}
+
 
 
 int boardGenerator::createWorld(int xD, int yD, int lS, int s) {
@@ -44,9 +61,13 @@ int boardGenerator::createWorld(int xD, int yD, int lS, int s) {
             world2[i][j] = false;
         }
     }
+    //createToad(world1, xD, yD);
+
+
     for (int k =0; k< lS; k++) {
         assignLife(world1, world2, xD, yD, s);
     }
+
     world1Pointer = world1;
     world2Pointer = world2;
     return 0;
@@ -76,7 +97,8 @@ int boardGenerator::inputSeedVariables() {
     cin>> yDimension;
     cout<< "Input Starting Alive cells: "<< "\n";
     cin>> startLife;
-    seed = 0;
+    cout <<"Input Starting Seed Number: "<< "\n";
+    cin>> seed;
     createWorld(xDimension, yDimension, startLife, seed);
     return 0;
 }

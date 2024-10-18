@@ -100,15 +100,17 @@ void displayBoard(bool** board, int x, int y) {
 
 
 int calculateNextFrame(bool** current, bool** next, int xSize, int ySize, bool view) {
+    int deadState = 0;
     for (int i=0; i< xSize; i++) {
         for (int j=0; j< ySize; j++) {
             next[i][j] = cellState(current,i, j, xSize,ySize);
+            if (next[i][j] == true) {deadState++;}
         }
     }
     if (view) {
         displayBoard(current, xSize, ySize);
     }
-    return 0;
+    return deadState;
 }
 
 bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iterations, int searchVariable, bool view, int startLife) {
@@ -127,7 +129,9 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
             current = world2;
             next = world1;
         }
-        calculateNextFrame(current, next, xSize, ySize, view);
+        int alive = calculateNextFrame(current, next, xSize, ySize, view);
+        if (alive == 0) {break;}
+
         if (searchVariable != 0) {
             searchResult= pat.patternSort(current,next,xSize,ySize,searchVariable, i);
             if (searchResult == true) {return true;}
@@ -202,7 +206,7 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
                 patternFound = false;
             }
         //}
-        if (gen.seed>0  and gen.seed%100 == 0) {
+        if (gen.seed>0  and gen.seed%10000 == 0) {
             int pauseCheck;
             cout <<"Paused due to number of seeds checked reaching "<<gen.seed<<". Press 1 to continue, 2 to end"<<"\n";
             cin >> pauseCheck;
