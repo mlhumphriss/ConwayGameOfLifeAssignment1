@@ -3,10 +3,11 @@
 #include <bits/fs_fwd.h>
 #include <bits/ranges_algo.h>
 #include "pattern.h"
+#include <iostream>
 
 using namespace std;
 
-bool inBoundsCheck(int a, int mod, int max) {
+bool patternMatching::inBoundsCheck(int a, int mod, int max) {
     if((a+mod >= 0)or(a+mod < max)){return true;}
     return false;
 }
@@ -36,6 +37,7 @@ bool patternMatching::blockSearch(bool** world, int x, int y, int xMax, int yMax
     }
     if (correctCells == correctNeeded) {
         if (patternMatchData.firstFound == true and iteration == patternMatchData.fI) {
+            //cout <<"found"<<"\n";
             return true;
         }
         if (patternMatchData.firstFound == true and iteration != patternMatchData.fI) {return false;}

@@ -154,6 +154,7 @@ int postRunInterface(int seed, int x, int y, int startLife) {
 
 int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
     gen.inputSeedVariables();
+
     int initialLife = gen.startLife;
     int lowestERN[3] = {10000, 0, 0};
     ERNAliveComparison<int> max((gen.xDimension*gen.yDimension)/2);
@@ -162,6 +163,7 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
     if (ernVariable == 1) {
         ernTest =true;
     }
+
     int iterations;
     cout<< "Number of iterations of game: "<<"\n";
     cin>> iterations;
@@ -169,6 +171,7 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
     while (patternFound == false) {
         patternFound = boardIteration(gen.world1Pointer, gen.world2Pointer, gen.xDimension, gen.yDimension, iterations, searchType, false, gen.startLife);
         if (patternFound == false) {
+
             if (ernTest == true and (max > gen.startLife)) {
                 gen.startLife++;
             }
@@ -176,8 +179,11 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
                 gen.startLife = initialLife;
                 gen.seed++;
             }
+
+            //gen.seed++;
             gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension, gen.world2Pointer, gen.seed, gen.startLife);
         }
+
         else {
             if (ernTest == true and lowestERN[0] > (gen.xDimension+gen.yDimension+gen.startLife)) {
                 lowestERN[0]= (gen.xDimension+gen.yDimension+gen.startLife);
@@ -189,18 +195,22 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
             }
         }
 
+
     }
     int viewSelect;
+
     if(ernTest == true) {
         cout <<"Lowest ERN is "<<lowestERN[0]<<" found in seed "<< lowestERN[1]<<"\n";
     }
     else {
         cout << "Pattern Found in seed: "<< gen.seed<<"\n";
     }
+
     cout << "Press 1 to view, 2 to skip viewing: " << "\n";
     cin >> viewSelect;
     switch(viewSelect) {
         case 1:
+
             if (ernTest == true) {
                 gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension, gen.world2Pointer, lowestERN[1], lowestERN[2]);
             }
@@ -211,6 +221,7 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
             postRunInterface(gen.seed, gen.xDimension, gen.yDimension, gen.startLife);
             break;
         case 2:
+
             if (ernTest == true) {
                 postRunInterface(lowestERN[1], gen.xDimension, gen.yDimension, lowestERN[2]);
             }
@@ -232,6 +243,7 @@ int searchInterface(boardGenerator gen){
     cout << "To Search for Glider enter 5"<<"\n";
     cout << "To Search for Light Weight SpaceShip enter 6"<<"\n";
     cin >> searchType;
+
     int ernSearch;
     cout << "Enter 1 for normal search, enter 2 for ERN test"<<"\n";
     cin >> ernSearch;
