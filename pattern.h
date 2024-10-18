@@ -15,7 +15,7 @@ public:
     int sequenceTotal = 2;
     int sequence;
     int truePattern[3][2] = { {1, 0}, {0, 1}, {1, 1} };
-    int patternCheckArea[2]= {-2, 3};
+    int patternCheckArea[6]= {-2,-1,0,1,2,3};
 
 };
 

@@ -111,10 +111,11 @@ int calculateNextFrame(bool** current, bool** next, int xSize, int ySize, bool v
 bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iterations, int searchVariable, bool view, int startLife) {
     bool** current;
     bool** next;
+    bool searchResult;
     patternMatching pat;
     pat.patternMatchData.searchType = searchVariable;
 
-    for (int i=0;i<iterations;i++) {
+    for (int i=0;i< iterations; i++) {
         if (i%2 == 0) {
             current = world1;
             next = world2;
@@ -125,14 +126,11 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
         }
         calculateNextFrame(current, next, xSize, ySize, view);
         if (searchVariable != 0) {
-            //Need to build out this in other file
-            //bool searchResult;
-            bool searchResult = pat.patternSort(current,next,xSize,ySize,searchVariable, i);
-
-            return searchResult;
+            searchResult= pat.patternSort(current,next,xSize,ySize,searchVariable, i);
+            if (searchResult == true) {return true;}
         }
     }
-    return false;
+    return searchResult;
 }
 
 int postRunInterface(int seed, int x, int y, int startLife) {
@@ -159,7 +157,7 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
     int lowestERN[3] = {10000, 0, 0};
     ERNAliveComparison<int> max((gen.xDimension*gen.yDimension)/2);
     bool ernTest = false;
-    int minSeedRuns = 300;
+    int minSeedRuns = 3000;
     if (ernVariable == 1) {
         ernTest =true;
     }
@@ -175,16 +173,17 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
             if (ernTest == true and (max > gen.startLife)) {
                 gen.startLife++;
             }
-            else {
+            else if (ernTest == true) {
                 gen.startLife = initialLife;
                 gen.seed++;
             }
 
-            //gen.seed++;
+            gen.seed++;
+            cout << gen.seed<<"\n";
             gen.resetWorld(gen.world1Pointer, gen.xDimension, gen.yDimension, gen.world2Pointer, gen.seed, gen.startLife);
         }
 
-        else {
+        //else {
             if (ernTest == true and lowestERN[0] > (gen.xDimension+gen.yDimension+gen.startLife)) {
                 lowestERN[0]= (gen.xDimension+gen.yDimension+gen.startLife);
                 lowestERN[1]= gen.seed;
@@ -193,7 +192,7 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
             if (ernTest == true and gen.seed < minSeedRuns) {
                 patternFound = false;
             }
-        }
+        //}
 
 
     }
