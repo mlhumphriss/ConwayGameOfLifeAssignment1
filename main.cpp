@@ -206,7 +206,7 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
                 patternFound = false;
             }
         //}
-        if (gen.seed>0  and gen.seed%10000 == 0) {
+        if (gen.seed>0  and gen.seed%50000 == 0) {
             int pauseCheck;
             cout <<"Paused due to number of seeds checked reaching "<<gen.seed<<". Press 1 to continue, 2 to end"<<"\n";
             cin >> pauseCheck;

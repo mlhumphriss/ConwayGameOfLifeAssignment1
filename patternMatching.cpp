@@ -237,6 +237,107 @@ bool patternMatching::toadSearch(bool** world, int x, int y, int xMax, int yMax,
             }
         }
     }*/
+    bool found = false;
+    int meshX;
+    int meshY;
+    int patternFinal1[5][2] = {{1,0},{2,0},{1,-1},{2,-1}, {3,-1}};
+    int patternFinal2[5][2] = {{0,1},{0,2},{1,1},{1,2}, {1,3}};
+    int patternFinal3[5][2] = {{1,0},{2,0},{1,1},{2,1}, {3,1}};
+    int patternFinal4[5][2] = {{0,1},{0,2},{-1,1},{-1,2}, {-1,3}};
+
+    if (found == false) {
+        for (int k = 0; k<5; k++) {
+            if(inBoundsCheck(x,patternFinal1[k][0],xMax)and inBoundsCheck(y,patternFinal1[k][1],yMax)) {
+                if (world[x+patternFinal1[k][0]][y+patternFinal1[k][1]]==true){correctCells++;}
+            }
+
+        }
+        if (correctCells == 6) {
+            found=true;
+            meshX = x -2;
+            meshY = y - 4;
+            for (int i = 0; i<8; i++) {
+                for (int j = 0; j<8; j++) {
+                    if(inBoundsCheck(meshX,i,xMax)and inBoundsCheck(meshY,j,yMax)) {
+                        if (world[meshX+i][meshY+j]==true){aliveCells++;}
+                    }
+                }
+            }
+
+
+
+        }
+        else{correctCells = 1;}
+    }
+    if (found == false) {
+        for (int k = 0; k<5; k++) {
+            if(inBoundsCheck(x,patternFinal2[k][0],xMax)and inBoundsCheck(y,patternFinal2[k][1],yMax)) {
+                if (world[x+patternFinal2[k][0]][y+patternFinal2[k][1]]==true){correctCells++;}
+            }
+
+        }
+        if (correctCells == 6) {
+            found=true;
+            meshX = x -3;
+            meshY = y - 2;
+            for (int i = 0; i<8; i++) {
+                for (int j = 0; j<8; j++) {
+                    if(inBoundsCheck(meshX,i,xMax)and inBoundsCheck(meshY,j,yMax)) {
+                        if (world[meshX+i][meshY+j]==true){aliveCells++;}
+                    }
+                }
+            }
+        }
+        else{correctCells = 1;}
+    }
+    if (found == false) {
+        for (int k = 0; k<5; k++) {
+            if(inBoundsCheck(x,patternFinal3[k][0],xMax)and inBoundsCheck(y,patternFinal3[k][1],yMax)) {
+                if (world[x+patternFinal3[k][0]][y+patternFinal3[k][1]]==true){correctCells++;}
+            }
+
+        }
+        if (correctCells == 6) {
+            found=true;
+            meshX = x -2;
+            meshY = y - 3;
+            for (int i = 0; i<8; i++) {
+                for (int j = 0; j<8; j++) {
+                    if(inBoundsCheck(meshX,i,xMax)and inBoundsCheck(meshY,j,yMax)) {
+                        if (world[meshX+i][meshY+j]==true){aliveCells++;}
+                    }
+                }
+            }
+        }
+        else{correctCells = 1;}
+    }
+    if (found == false) {
+        for (int k = 0; k<5; k++) {
+            if(inBoundsCheck(x,patternFinal4[k][0],xMax)and inBoundsCheck(y,patternFinal4[k][1],yMax)) {
+                if (world[x+patternFinal4[k][0]][y+patternFinal4[k][1]]==true){correctCells++;}
+            }
+
+        }
+        if (correctCells == 6) {
+            found=true;
+            meshX = x -4;
+            meshY = y - 2;
+            for (int i = 0; i<8; i++) {
+                for (int j = 0; j<8; j++) {
+                    if(inBoundsCheck(meshX,i,xMax)and inBoundsCheck(meshY,j,yMax)) {
+                        if (world[meshX+i][meshY+j]==true){aliveCells++;}
+                    }
+                }
+            }
+        }
+        else{correctCells = 1;}
+    }
+
+
+
+
+
+    /*
     int adjustors[4][2]={{-1,-1},{0,-1},{-1,0},{1,1}};
     int truePattern1[5][2] = { {1,0}, {2, 0}, {1, -1}, {2, -1}, {3,-1} };
     for (int k=0; k<4; k++) {
@@ -273,7 +374,7 @@ bool patternMatching::toadSearch(bool** world, int x, int y, int xMax, int yMax,
                 }
             }
         }
-    }
+    }*/
     if (correctCells == 6 and aliveCells == correctCells) {
         cout<<"maybe found"<<"\n";
 
