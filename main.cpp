@@ -112,6 +112,7 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
     bool** current;
     bool** next;
     patternMatching pat;
+    pat.patternMatchData.searchType = searchVariable;
 
     for (int i=0;i<iterations;i++) {
         if (i%2 == 0) {
@@ -126,7 +127,7 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
         if (searchVariable != 0) {
             //Need to build out this in other file
             //bool searchResult;
-            bool searchResult = pat.patternSort(current,next,xSize,ySize,startLife,searchVariable);
+            bool searchResult = pat.patternSort(current,next,xSize,ySize,searchVariable, i);
 
             return searchResult;
         }

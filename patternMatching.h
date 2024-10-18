@@ -5,12 +5,18 @@
 
 class patternMatching {
 public:
-    bool patternSort(bool** current,bool** next,int xSize,int ySize,int startLife,int searchVariable);
+    bool patternSort(bool** current,bool** next,int xSize,int ySize,int searchVariable, int iteration);
 
     int originBlock[2];
 
+    struct {int searchType; int fX; int fY; int fI; bool firstFound;} patternMatchData;
+
+    bool blockSearch(bool** world, int x, int y, int xMax, int yMax, int iteration);
+
 private:
-    static bool inBoundsCheck(int a, int mod, int max);
+    bool inBoundsCheck(int a, int mod, int max);
+
+    bool patternSwitch (int searchVariable, bool** world, int xMax, int yMax, int x, int y, int iteration);
 };
 
 
