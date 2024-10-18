@@ -49,7 +49,7 @@ bool patternMatching::blockSearch(bool** world, int x, int y, int xMax, int yMax
             patternMatchData.firstFound = true;
             patternMatchData.fX = x;
             patternMatchData.fY = y;
-            patternMatchData.fI = iteration + 2;
+            patternMatchData.fI = iteration + block.sequenceTotal;
             return false;
         }
 
@@ -57,7 +57,29 @@ bool patternMatching::blockSearch(bool** world, int x, int y, int xMax, int yMax
     return false;
 }
 
-bool beehiveSearch(bool** world, int x, int y, int xMax, int yMax, int iteration) {
+bool patternMatching::beehiveSearch(bool** world, int x, int y, int xMax, int yMax, int iteration, int orientation) {
+    int patternX;
+    int patternY;
+    if (world[x][y] != true) {return false;}
+    if (orientation == 0) {patternX = 0; patternY = 1;}
+    else{patternX = 1; patternY = 0;}
+    Beehive hive;
+    int correctCells=1;
+    int aliveCells=0;
+
+    for (int i=0; i<2; i++) {
+        for (int j=0; j<2; j++) {
+            for (int k=0; k<5; k++) {
+                if (i==hive.truePattern[k][patternX] and j==hive.truePattern[k][patternY]) {
+                    if(inBoundsCheck(x,i,xMax) and inBoundsCheck(y,j,yMax)) {
+                        if (world[x+i][y+j] == true){correctCells++;}
+                    }
+                }
+            }
+        }
+    }
+
+
     return false;
 }
 
@@ -80,13 +102,15 @@ bool lwssSearch(bool** world, int x, int y, int xMax, int yMax, int iteration) {
 
 
 bool patternMatching::patternSwitch (int searchVariable, bool** world, int xMax, int yMax, int x, int y, int iteration) {
-    bool searchResult;
+    bool searchResult = false;
     switch (searchVariable) {
         case 1:
             searchResult = blockSearch(world, x, y, xMax, yMax, iteration);
         break;
         case 2:
-            searchResult = beehiveSearch(world, x, y, xMax, yMax, iteration);
+            if (beehiveSearch(world, x, y, xMax, yMax, iteration, 0) or beehiveSearch(world, x, y, xMax, yMax, iteration, 1)) {
+                searchResult = true;
+            }
         break;
         case 3:
             searchResult = blinkerSearch(world, x, y, xMax, yMax, iteration);

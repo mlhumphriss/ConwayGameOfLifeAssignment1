@@ -13,6 +13,8 @@ public:
 
     bool blockSearch(bool** world, int x, int y, int xMax, int yMax, int iteration);
 
+    bool beehiveSearch(bool** world, int x, int y, int xMax, int yMax, int iteration, int orientation) ;
+
 private:
     bool inBoundsCheck(int a, int mod, int max);
 

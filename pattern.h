@@ -24,7 +24,8 @@ public:
     int sequenceTotal = 2;
     int sequence;
     int truePattern[5][2] = { {1, 1}, {1, -1}, {2, 1}, {2, -1}, {3,0} };
-
+    int patternCheckAreaL[8]= {-2,-1,0,1,2,3,4,5};
+    int patternCheckAreaW[7]= {-3,-2,-1,0,1,2,3};
 };
 
 class Blinker : public Pattern {

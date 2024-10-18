@@ -132,7 +132,7 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
             searchResult= pat.patternSort(current,next,xSize,ySize,searchVariable, i);
             if (searchResult == true) {return true;}
         }
-        if (i%1000 == 0) {
+        if (i>0 and i%1000 == 0) {
             int pauseCheck;
             cout <<"Paused due to number of loops reaching "<<i<<". Press 1 to continue, 2 to end"<<"\n";
             cin >> pauseCheck;
@@ -202,7 +202,7 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
                 patternFound = false;
             }
         //}
-        if (gen.seed%100 == 0) {
+        if (gen.seed>0  and gen.seed%100 == 0) {
             int pauseCheck;
             cout <<"Paused due to number of seeds checked reaching "<<gen.seed<<". Press 1 to continue, 2 to end"<<"\n";
             cin >> pauseCheck;
