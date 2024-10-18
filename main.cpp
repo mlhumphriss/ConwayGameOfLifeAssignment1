@@ -6,6 +6,9 @@
 
 using namespace std;
 
+void pause() {
+    exit(0);
+}
 int writeFile(int seed, int xSize, int ySize, int startLife) {
     cout<< "Name to save file as in format file.txt: "<<"\n";
     string name;
@@ -129,6 +132,12 @@ bool boardIteration(bool** world1, bool** world2, int xSize, int ySize, int iter
             searchResult= pat.patternSort(current,next,xSize,ySize,searchVariable, i);
             if (searchResult == true) {return true;}
         }
+        if (i%1000 == 0) {
+            int pauseCheck;
+            cout <<"Paused due to number of loops reaching "<<i<<". Press 1 to continue, 2 to end"<<"\n";
+            cin >> pauseCheck;
+            if (pauseCheck == 2) {pause();}
+        }
     }
     return searchResult;
 }
@@ -193,6 +202,12 @@ int experimentLooping(boardGenerator gen, int searchType, int ernVariable) {
                 patternFound = false;
             }
         //}
+        if (gen.seed%1000 == 0) {
+            int pauseCheck;
+            cout <<"Paused due to number of seeds checked reaching "<<gen.seed<<". Press 1 to continue, 2 to end"<<"\n";
+            cin >> pauseCheck;
+            if (pauseCheck == 2) {pause();}
+        }
 
 
     }

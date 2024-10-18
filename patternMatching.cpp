@@ -19,7 +19,6 @@ bool patternMatching::blockSearch(bool** world, int x, int y, int xMax, int yMax
     Block block;
     int correctCells=1;
     int aliveCells=0;
-    bool found=false;
     for (int i=0; i<2; i++) {
         for (int j=0; j<2; j++) {
             for (int k=0; k<3; k++) {
@@ -39,36 +38,10 @@ bool patternMatching::blockSearch(bool** world, int x, int y, int xMax, int yMax
         }
     }
     if (correctCells == 4 and aliveCells == correctCells) {
-        cout<<"found"<<"\n";
-        found = true;
-        return true;
-    }
+        cout<<"maybe found"<<"\n";
 
-
-    /*int correctNeeded = 36;
-    //cout<<"pattern looked at"<<"\n";
-    for (int i = 0; i < 6; i++) {
-        for (int j = 0; j < 6; j++) {
-            if(inBoundsCheck(x,block.patternCheckArea[i],xMax) and inBoundsCheck(y,block.patternCheckArea[j],yMax)) {
-                if (world[x+block.patternCheckArea[i]][y+block.patternCheckArea[j]] == false) {correctCells++;} //segmentation fault possible
-                else if (i==0 and j==0){correctCells++;}
-                else {
-                    for (int k=0; k<3; k++) {
-                        if (block.patternCheckArea[i]==block.truePattern[k][0] and block.patternCheckArea[j]==block.truePattern[k][1]) {
-                            if (world[x+block.patternCheckArea[i]][y+block.patternCheckArea[j]] == true){correctCells++;}
-                        }
-                    }
-                }
-
-            }
-            else if((block.patternCheckArea[i]<0 or block.patternCheckArea[i]>1) or (block.patternCheckArea[j]<0 or block.patternCheckArea[j]>1)) {correctNeeded--;}
-        }
-    }
-    if (correctCells == correctNeeded) {
-        return true;*/
-        /*
         if (patternMatchData.firstFound == true and iteration == patternMatchData.fI) {
-            cout <<"found"<<"\n";
+            cout <<"found sure"<<"\n";
             return true;
         }
         if (patternMatchData.firstFound == true and iteration != patternMatchData.fI) {return false;}
@@ -79,8 +52,8 @@ bool patternMatching::blockSearch(bool** world, int x, int y, int xMax, int yMax
             patternMatchData.fI = iteration + 2;
             return false;
         }
-        */
-    //}
+
+    }
     return false;
 }
 
