@@ -2,7 +2,8 @@
 #include "randomBoardGenerator.h"
 #include <fstream>
 #include "patternMatching.h"
-
+#include <thread>
+#include <chrono>
 
 using namespace std;
 
@@ -84,6 +85,7 @@ public:
 
 
 void displayBoard(bool** board, int x, int y) {
+    system("CLS");
     for (int i=0; i< x; i++) {
         for (int j=0; j< y; j++) {
             if (board[i][j] == true) {
@@ -109,6 +111,7 @@ int calculateNextFrame(bool** current, bool** next, int xSize, int ySize, bool v
     }
     if (view) {
         displayBoard(current, xSize, ySize);
+        std::this_thread::sleep_for(chrono::milliseconds(500));
     }
     return deadState;
 }
